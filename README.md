@@ -1,15 +1,19 @@
 # Future_Sales_Prediction
+[Link to notebook](https://github.com/MahsaShokouhi/Future_Sales_Prediction/blob/master/Future_Sales_Prediction.ipynb)
 
+<br>
 
 ## Business Problem
 
 Future sales forecasting is an important part of the financial planning of a company. An accurate sales forecast is essential for business and revenue growth by allowing companies to gauge the demand for their products, plan their supply and manage the inventory accordingly. 
 
+<br>
 
 ## Objective
 
 The goal of this project is to use historical daily sales for all products of a software company with multiple stores/branches and predict the total sales for every product at each store over the following month.
 
+<br>
 
 ## Data
 
@@ -29,6 +33,7 @@ max |	33.00 |	59.00 |	22169.00 |	307980.00 |	2169.0 |0	83.00
 - item_cnt_day: number of daily sales for each product at each store
 - item_category_id: unique identifier for each item category (such as DVD-Movie, Book, Games, software, etc.)
 
+<br>
 
 ## Data Wrangling
 
@@ -44,6 +49,7 @@ date    |	month_block |	shop_id |	item_id |	item_price |	item_category_id |	retu
 2015-10-22 |	33 |	25 |	7440 |	299.0 |	57 |	0.0 |	1.0
 2015-10-03 |	33 |	25 |	7460 |	299.0 |	55 |	0.0 |	1.0
 
+<br>
 
 ## Exploratory Data Analysis
 
@@ -53,6 +59,7 @@ To assess autocorrelation of the target variable, 12 lags (months) were used and
 
 ![Figure1](/images/fig1.png)
 
+<br>
 
 ## Feature Engineering
 
@@ -69,6 +76,7 @@ The following figure shows correlations between all features and the target vari
 
 ![Figure2](/images/fig2.png)
 
+<br>
 
 ## Modelling
 
@@ -86,11 +94,13 @@ The model parameters were tuned duing cross-validation, which shows improved rms
 The average rmse with 3-fold cross-validation: 5.46
 The rmse of prediction on the test set: 11.17
 
+<br>
 
 ## Feature Importance
 
 ![Figure3](/images/fig3.png)
 
+<br>
 
 ## Conclusions and Considerations
 
@@ -99,6 +109,6 @@ The rmse of prediction on the test set: 11.17
    2. Product's monthly sales
    3. Previous month's sales of the product at the store
    4. The store
-- A few more approaches were tested as summarized below, but did not improve the model performance:
+- A few more approaches were also examined as summarized below, but did not improve the model performance:
    - Extending item categoies by text-encoding the item category names
    - Ensembling and combining linear and gradient boosting models, using either weighted averaging or stacking the two models.  
