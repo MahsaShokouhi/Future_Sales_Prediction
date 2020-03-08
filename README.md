@@ -2,11 +2,11 @@
 
 ## Business Problem
 
-Future sales forecasting is an important part of the financial planning of a company. An accurate sales forecast is essential for business and revenue growth and allows companies to gauge the demand for their products, plan their supply and manage the inventory accordingly. 
+Future sales forecasting is an important part of the financial planning of a company. An accurate sales forecast is essential for business and revenue growth by allowing companies to gauge the demand for their products, plan their supply and manage the inventory accordingly. 
 
 ## Objective
 
-The goal of this project is to use historical records of daily sales of all products of a software company with multiple stores/branches and predict the total sales for every product at each store for the following month.
+The goal of this project is to use historical daily sales for all products of a software company with multiple stores/branches and predict the total sales for every product at each store over the following month.
 
 ## Data
 
@@ -23,7 +23,7 @@ max |	33.00 |	59.00 |	22169.00 |	307980.00 |	2169.0 |0	83.00
 - month_block: index of the month, ranging from 0 to 33.
 - shop_id, and item_id: unique identifier for each store and product, respectively.
 - item_price: product price (daily)
-- item_cnt_day: number of daily sales for each item at each store
+- item_cnt_day: number of daily sales for each product at each store
 - item_category_id: unique identifier for each item category (such as DVD-Movie, Book, Games, software, etc.)
 
 ## Data Wrangling
@@ -41,9 +41,9 @@ date    |	month_block |	shop_id |	item_id |	item_price |	item_category_id |	retu
 2015-10-03 |	33 |	25 |	7460 |	299.0 |	55 |	0.0 |	1.0
 
 ## Exploratory Data Analysis
-Since the goal is to predict monthly sales, the daily records were aggregated to obtain total monthly sales of each product at each store.
+Since the goal is to predict monthly sales, the daily records were aggregated to obtain total monthly sales of each product at each store: total_monthly_sale (target variable).
 
-To assess autocorrelation in the monthly sales, 12 lags (months) were used and the correlation between sales in a given month and the following 12 months were estimated.  The following figure shows that these correlations decrease with number of lags, with strongest correlation seen with 1-month lag.
+To assess autocorrelation of the target variable, 12 lags (months) were used and the correlation between total sales of each product sold at each store in a given month and the following 12 months were estimated.  The following figure shows that this correlation decreases over longer periods, with strongest correlation seen with 1-month lag.
 
 ![Figure1](/images/fig1.png)
 
@@ -52,25 +52,22 @@ To assess autocorrelation in the monthly sales, 12 lags (months) were used and t
 
 The following parameteres were extracted and added to features:
 1. month, season, and year for each sales record.
-2. monthly store sales (monthly_sale_shop: total sales at each store across all products), and monthly item sales (monthly_sale_item : total sales of each product across all stores)
-3. 6-months lags of total_monthly_sale, monthly_sale_shop, monthly_sale_item
-4. Mean-encode 'item_id' and 'shop_id': mean target value for each product, and each shop, respectively.
+2. monthly store sales (monthly_sale_shop: monthly sales of all products at each store), and monthly products sales (monthly_sale_item : total sales of a given product across all stores)
+3. 1-6 months lags of total_monthly_sale, monthly_sale_shop, monthly_sale_item
+4. Mean-encode 'item_id' and 'shop_id': mean target value for each product, and each shop, respectively. To reduce overfitting, regularizared mean encoding was achieved with 5-fold cross-validation. 
+Here are the correlations between mean-encoded features and the target variable: 
     * Correlation between mean_encoded shop_id and target = 0.01
     * Correlation between mean_encoded item_id and target = 0.48
 
-The following figure shows correlations between these features and the target variable: total montly sale for each product at each store (monthly_sale_item).
+The following figure shows correlations between all features and the target variable: total montly sale for each product at each store (monthly_sale_item).
 
 ![Figure2](/images/fig2.png)
 
 ## Modelling
 
-Train-test split
-Train-test split: Keep the last month for test
+- Train-test split: Keep the first 33 month for training and the last month for test
 
-### Baseline model
-Monthly sale for each item, at each shop = total sale for the previous month
-
-The root mean squared error of prediction with baseline model is: 14.50
+- Baseline model: Predict sales based on previous month (monthly sale for each item, at each shop = total sale for the previous month). The root mean squared error of prediction on the test set with baseline model is: 14.50
 
 
 ### Create and Evaluate Models
