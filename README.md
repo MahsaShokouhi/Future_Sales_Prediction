@@ -86,12 +86,16 @@ The following figure shows correlations between all features and the target vari
 
 ### Linear Model
 For linear model, feaures were scaled using standard scaling and principal component analysis was used to obtain uncorrelated predictors. Here are the rmse values during cross-validation and test:
+
 The average rmse with 3-fold cross-validation: 5.86
+
 The rmse of prediction on the test set: 11.96
 
 ### Light Gradient Boosting Algorithm
 The model parameters were tuned duing cross-validation, which shows improved rmse for both cross-validation and test set:
+
 The average rmse with 3-fold cross-validation: 5.46
+
 The rmse of prediction on the test set: 11.17
 
 <br>
