@@ -55,7 +55,7 @@ date    |	month_block |	shop_id |	item_id |	item_price |	item_category_id |	retu
 
 Since the goal is to predict monthly sales, the daily records were aggregated to obtain total monthly sales of each product at each store: total_monthly_sale (target variable).
 
-To assess autocorrelation of the target variable, 12 lags (months) were used and the correlation between total sales of each product sold at each store in a given month and the following 12 months were estimated.  The following figure shows that this correlation decreases over longer periods, with strongest correlation seen with 1-month lag.
+To assess autocorrelation of the target variable, 12 lags (months) were used and the correlation between total sales of each product sold at each store in a given month and the previous 12 months were estimated.  The following figure shows that this correlation decreases over longer periods, with strongest correlation seen with 1-month lag.
 
 ![Figure1](/images/fig1.png)
 
