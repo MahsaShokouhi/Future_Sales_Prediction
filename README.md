@@ -7,7 +7,7 @@
 
 Future sales forecasting is an important part of the financial planning of a company. An accurate sales forecast is essential for business and revenue growth by allowing companies to gauge the demand for their products, plan their supply and manage the inventory accordingly. 
 
-The goal of this project is to use historical daily sales for all products of a software company with multiple stores/branches and predict the total sales for every product at each store in the following month.
+The goal of this project was to use historical daily sales for all products of a software company with multiple stores/branches and predict the total sales for every product at each store in the following month.
 
 The main complexity of this project was the multi-faceted nature of the dataset: a wide range of products (Books, Movies, Game Consoles, Software, etc), with different popularity and seasonality patterns, sold at different stores. Typically some stores are more crowded than others, depending on location, staff, customer service, etc.   
 
@@ -15,12 +15,12 @@ The main complexity of this project was the multi-faceted nature of the dataset:
 
 ## Data
 
-The training data was a time-series dataset consisting of 2935849 records of daily sales for 21807 products across 60 stores over a period of 34 months (from January 2013 to October 2015):
-sales_train.csv : daily sales records
-items.csv : items specifications including "item name", "item_id", and "item_category_id"
-item_categories.csv: items categories information including "item category name" and "item category id"
+The training data was a time-series dataset consisting of 2935849 records of daily sales for 21807 products across 60 stores over a period of 34 months (from January 2013 to October 2015) and was included in separate files:
+- sales_train.csv : daily sales records
+- items.csv : items specifications including "item name", "item_id", and "item_category_id"
+- item_categories.csv: items categories information including "item category name" and "item category id"
 
-Here's a snapshot of the dataset after renaming columns, removing product name, and merging "sales" records with items specifications:
+Here's a snapshot of the dataset after renaming columns, removing item name, and merging sales records with items specifications:
 
 stats | month_index |	shop_id |	item_id |	item_price |	item_cnt_day |	item_category_id
 ----- | ----------- |  ------- |  ------ |  --------- |  ------------ |  ----------------
@@ -56,13 +56,13 @@ date    |	month_index |	shop_id |	item_id |	item_price |	item_category_id |	retu
 
 ## Exploratory Data Analysis
 
-Since the goal is to predict monthly sales, the daily records were aggregated to obtain monthly sales of each product at each store: sales_item_shop (target variable).
+Since the goal was to predict monthly sales, the daily records were aggregated to obtain monthly sales of each product at each store: sales_item_shop (target variable).
 
-The following figure shows plots of 3 different products at 3 different stores, which shows a different sales pattern for each case in terms of sales frequency and seasonality.
+The following figure shows plots of sales of3 different products at 3 different stores over the duration of 34 months, which shows a different sales pattern for each case in terms of sales frequency and seasonality. The right-most plot for example, shows that the item was sold only in the first 6 months.
 
 ![Figure1](/images/fig1.png)
 
-The autocorrelation of the monthy sales was estimated uing 12 lags (months). The following figure shows plots of correlation of each month's sales with previous months' sales(up to 12 previous month). As can be seen, montly sales has strongest correlaiton with previous month's sales and the correaltion decreases over longer period of time.
+The autocorrelation of the monthy sales was estimated uing 12 lags (months). The following figure shows plots of correlation of each month's sales with previous months' sales (up to 12 previous month). As can be seen, monthly sales is highly correlaited with previous month's sales and decreases over longer period of time.
 
 ![Figure2](/images/fig2.png)
 
@@ -79,7 +79,7 @@ Here are the correlations between mean-encoded features and the target variable:
     * Correlation between mean_encoded shop_id and target = 0.01
     * Correlation between mean_encoded item_id and target = 0.48
 
-This led to a total number of 48 features. The following figure shows correlations between all features and the target variable: total montly sale for each product at each store (sales_item_shop). Most notably, the target variable shows highest correlation with the item-specific features such as item's monthly sales (across all stores), mean-encoded item, in the same month as well as previous months.
+This led to a total number of 48 features. The following figure shows correlations between all features and the target variable: total montly sale for each product at each store (sales_item_shop). Most notably, the target variable shows highest correlation with the item-specific features such as item's monthly sales (across all stores), mean-encoded item, in the same month as well as in previous months.
 
 ![Figure3](/images/fig3.png)
 
@@ -87,9 +87,9 @@ This led to a total number of 48 features. The following figure shows correlatio
 
 ## Modelling
 
-- Becasue of the complex and sparse data, the commonly used used methods for timeseries data (SARIMA model, for example) is not sutiable. Instead, the lagged data (from up to 12 previous months) were included in the regression models (with both linear and non-linear regression). In addition, date-related features were added to the model to capture potential, item-specific, sale seasonality as mentioned in the previous section. To evaluate and compare models, root mean squared error (rmse) was chosen as the average rmse was computed using 3-fold cross-validation.
-- Train-test split: Keep the first 33 month for training and the last month for test 
-- Baseline model (for comparison): Predict sales based on previous month: monthly sale (for each item, at each shop) = sale for the previous month. The root mean squared error of prediction on the test set with baseline model is: 14.50
+- Becasue of the complex and sparse data, the commonly used models for timeseries data (SARIMA model, for example) is not sutiable. Instead, regression models (both linear and non-linear models) were used and the lagged data (sales data from up to 12 previous months) were included in the regression models. In addition, date-related features were added to the model to capture potential, item-specific sale seasonality, as mentioned in the previous section. To evaluate and compare models, root mean squared error (rmse) was chosen and the average rmse was computed using 3-fold cross-validation.
+- Train-test split: Kept the first 33 month for training and the last month for test 
+- Baseline model (for comparison): Predict sales based on previous month: monthly sale (for each item, at each shop) = sale in the previous month. The root mean squared error of prediction on the test set with baseline model was: 14.50
 
 ### Linear Model
 For linear model, feaures were scaled using standard scaling and principal component analysis was used to obtain uncorrelated predictors. Here are the rmse values during cross-validation and test:
@@ -99,7 +99,7 @@ The average rmse with 3-fold cross-validation: 5.80
 The rmse of prediction on the test set: 12.02
 
 ### Light Gradient Boosting Algorithm
-The model parameters were tuned duing cross-validation, which shows improved rmse for both cross-validation and test set:
+The model parameters were tuned duing cross-validation. This model showed improved rmse for both cross-validation and test set:
 
 The average rmse with 3-fold cross-validation: 5.29
 
@@ -115,11 +115,12 @@ The rmse of prediction on the test set: 10.21
 
 ## Conclusions and Considerations
 
-- The model shows that the 4 most important predictors of future sales of a product at a store, in the order of importance are:
-   1. Store's monthly sales 
-   2. Product's monthly sales
-   3. Previous month's sales of the product at the store
-   4. The store
+- The model shows that across all stores, the previous sales of the product is the most important predictor of future sales. More specifically, here are the 5 most important predictors of future sales of a product at at a given store, in the order of importance:
+   1. Product's monthly sales across all stores
+   2. Store's monthly sales of all products 
+   3. The store
+   4. Previous month's sales of the product at this store
+   5. Target-encoded of the "product" feature (item_id)
 - A few more approaches were also examined as summarized below, but did not improve the model performance:
-   - Extending item categoies by text-encoding the item category names
+   - Extending item categoies by using text-encoding for the item category names.
    - Ensembling and combining linear and gradient boosting models, using either weighted averaging or stacking the two models.  
