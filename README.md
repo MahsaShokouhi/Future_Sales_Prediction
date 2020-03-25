@@ -120,7 +120,7 @@ The rmse of prediction on the test set: 10.21
    2. Store's monthly sales of all products 
    3. The store
    4. Previous month's sales of the product at this store
-   5. Target-encoded of the "product" feature (item_id)
+   5. Target-encoding of the "product" feature (item_id)
 - A few more approaches were also examined as summarized below, but did not improve the model performance:
    - Extending item categoies by using text-encoding for the item category names.
    - Ensembling and combining linear and gradient boosting models, using either weighted averaging or stacking the two models.  
